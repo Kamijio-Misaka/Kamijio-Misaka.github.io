@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Verilog语法基础</title>
+    <url>/2022/01/04/Verilog%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p><img src="/2022/01/04/Verilog%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/img.png" alt="img"><br><span id="more"></span></p>
+<h1 id="Verilog-HDL基础语法"><a href="#Verilog-HDL基础语法" class="headerlink" title="Verilog HDL基础语法"></a>Verilog HDL基础语法</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>硬件描述语言，可以用代码描述数字硬件电路。</p>
+<h2 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h2><h3 id="逻辑值"><a href="#逻辑值" class="headerlink" title="逻辑值"></a>逻辑值</h3><ul>
+<li>0 低电平</li>
+<li>1 高电平</li>
+<li>z 高阻态，无驱动</li>
+<li>x 位置逻辑电平</li>
+</ul>
+<h3 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h3><ul>
+<li>+加法</li>
+<li>-减法</li>
+<li>*乘法</li>
+<li>/ 除法</li>
+<li>%求模</li>
+</ul>
+<h3 id="归约运算符、按位运算符"><a href="#归约运算符、按位运算符" class="headerlink" title="归约运算符、按位运算符"></a>归约运算符、按位运算符</h3><p>逻辑运算的两种用法</p>
+<ul>
+<li>两数参与运算时位按位</li>
+<li>一个数参与运算时位归约</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">常规的按位运算昂<span class="comment">//按位 两数比特数相同</span></span><br><span class="line">&amp;<span class="number">4&#x27;b1111</span> = <span class="number">1&#x27;b1</span> (<span class="number">1</span>&amp;<span class="number">1</span>&amp;<span class="number">1</span>&amp;<span class="number">1</span>) <span class="comment">//归约</span></span><br></pre></td></tr></table></figure>
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><p>&amp;&amp;、||、==等</p>
+<p>运算给两边和结果都只有两种类型：真1，假0。</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">&amp;&amp;、||、==、！=</span><br><span class="line">与 、或、等、不等</span><br></pre></td></tr></table></figure>
+<h3 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h3><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">&gt; &lt; &gt;= &lt;=</span><br></pre></td></tr></table></figure>
+<p>通常和if连用</p>
+<h3 id="移位运算符"><a href="#移位运算符" class="headerlink" title="移位运算符"></a>移位运算符</h3><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">&lt;&lt; 左</span><br><span class="line">&gt;&gt; 右</span><br></pre></td></tr></table></figure>
+<p>==补零==</p>
+<h3 id="位拼接运算符"><a href="#位拼接运算符" class="headerlink" title="位拼接运算符"></a>位拼接运算符</h3><p><code>&#123;  ，&#125;</code> 不同数据间用，隔开</p>
+<p>例子</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">d = &#123;a,b,c&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a>条件运算符</h3><p><code>？：</code> 三元运算符，参与运算的有三个量</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> po_flag = (cnt == CNT_MAX) ? <span class="number">1&#x27;b1</span> :<span class="number">1&#x27;b0</span>;</span><br></pre></td></tr></table></figure>
+<p>当？前括号内条件满足则将<code>1&#39;b1</code>赋值给变量<code>po_flag</code>。</p>
+<p>否则，将<code>0&#39;b1</code>赋值给变量<code>po_flag</code>。</p>
+<h3 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h3><p>依次从上到下</p>
+<ul>
+<li>归约运算符</li>
+<li>算数运算符</li>
+<li>移位运算符</li>
+<li>关系运算符</li>
+<li>“ == “</li>
+<li>“ != “</li>
+<li>按位运算符</li>
+<li>“ &amp;&amp; “</li>
+<li>” || “</li>
+<li>条件运算符 一元</li>
+<li>二元运算符</li>
+<li>三元运算符</li>
+</ul>
+<p>（括号增加优先级）</p>
+<h3 id="分支语句"><a href="#分支语句" class="headerlink" title="分支语句"></a>分支语句</h3><p><code>if-else</code> 与C语言一致</p>
+<p><code>case</code></p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span>(&lt;控制表达式&gt;)</span><br><span class="line">	&lt;分支<span class="number">1</span>&gt;: 语句块<span class="number">1</span></span><br><span class="line">	&lt;分支<span class="number">2</span>&gt;: 语句块<span class="number">2</span></span><br><span class="line">	&lt;分支<span class="number">3</span>&gt;: 语句块<span class="number">3</span></span><br><span class="line">	...</span><br><span class="line">	&lt;分支n&gt;: 语句块n</span><br><span class="line">	<span class="keyword">default</span>: 语句块n+<span class="number">1</span></span><br><span class="line"><span class="keyword">endcase</span></span><br></pre></td></tr></table></figure>
+<h3 id="系统函数"><a href="#系统函数" class="headerlink" title="系统函数"></a>系统函数</h3><p>Verilog预先定义了函数，可完成特殊功能，一般只能在TestBench中使用</p>
+<h4 id="timescale"><a href="#timescale" class="headerlink" title="timescale"></a>timescale</h4><p>1、<code>timescale 1ns/1ns</code> 时间预编译指令 时间单位/时间精度</p>
+<p>时间单位/时间精度的值为<strong>⑩的倍数或1</strong>和单位s、ms、us、ns、ps、fs组成</p>
+<p><strong>时间单位</strong>：仿真过程所有与时间相关量的单位，常用 <strong>#数字</strong> 表示延时相应时间单位。</p>
+<p><strong>时间精度</strong>：决定时间相关量的精度与仿真显示的最小刻度</p>
+<p>如：<code>timescale 1ns/10ps</code> 精度0.01，#10.11 表示延时10110ps。</p>
+<p>==时间单位不能比精度小==</p>
+<h4 id="display"><a href="#display" class="headerlink" title="$display"></a>$display</h4><p><strong>作用</strong>：输出与打印信息</p>
+<p><strong>使用</strong>：与c语言printf类似，但是不需要自动换行。</p>
+<h4 id="write"><a href="#write" class="headerlink" title="$write"></a>$write</h4><p><strong>作用</strong>：输出与打印信息</p>
+<p><strong>使用</strong>：和c语言printf完全一样。</p>
+<h4 id="strobe"><a href="#strobe" class="headerlink" title="$strobe"></a>$strobe</h4><p><strong>作用</strong>：输出与打印信息，仅在最后（所有程序最后）执行</p>
+<p><strong>使用</strong>：和c语言printf一样，但是运行不一样</p>
+<h4 id="monitor"><a href="#monitor" class="headerlink" title="$monitor"></a>$monitor</h4><p><strong>作用</strong>：用于持续检测变量，只要内部变量更改就会执行一次</p>
+<p><strong>使用</strong>：和c语言printf完全一样。</p>
+<h4 id="stop和finish（需要-前缀）"><a href="#stop和finish（需要-前缀）" class="headerlink" title="stop和finish（需要$前缀）"></a>stop和finish（需要$前缀）</h4><p><strong>作用</strong>：</p>
+<ul>
+<li>$stop暂停仿真</li>
+<li>finish结束继续仿真</li>
+</ul>
+<p><strong>使用</strong>：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="built_in">$stop</span>;<span class="comment">//暂停</span></span><br><span class="line"><span class="built_in">$finish</span>;<span class="comment">//结束</span></span><br></pre></td></tr></table></figure>
+<h4 id="time"><a href="#time" class="headerlink" title="$time"></a>$time</h4><p><strong>作用</strong>：时间函数，返回64位当前仿真时间</p>
+<p><strong>使用</strong>：当成常量来使用。</p>
+<h4 id="random"><a href="#random" class="headerlink" title="$random"></a>$random</h4><p><strong>作用</strong>：随机函数，产生并返回一个随机数</p>
+<p><strong>使用</strong>：当成常量来使用。</p>
+<h4 id="readmemb（b或h）"><a href="#readmemb（b或h）" class="headerlink" title="$readmemb（b或h）"></a>$readmemb（b或h）</h4><p><strong>作用</strong>：</p>
+<ul>
+<li><code>$readmemb</code>读取二进制文件函数</li>
+<li><code>$readmemh</code>读取十六进制文件函数</li>
+</ul>
+<p><strong>使用</strong>：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="built_in">$readmemb</span>(<span class="string">&quot;&lt;数据文件名&gt;&quot;</span>, &lt;存贮器命&gt;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] a [<span class="number">20</span>:<span class="number">0</span>];<span class="comment">//定义存储器</span></span><br><span class="line"><span class="built_in">$readmemb</span>(<span class="string">&quot;xxx.txt&quot;</span>, a);</span><br></pre></td></tr></table></figure>
+<h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><p>==Verilog关键字一般为小写==</p>
+<h4 id="module"><a href="#module" class="headerlink" title="module"></a>module</h4><p><code>module</code>表示模块开始</p>
+<p><code>endmodule</code>表示模块结束</p>
+<p>使用例</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> exmaple <span class="comment">//模块开始 模块名（一般与.v文件名一致）</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">input</span> [变量类型] [变量命],</span><br><span class="line">    <span class="keyword">output</span> [变量类型] [变量命],</span><br><span class="line">    <span class="keyword">inout</span> [变量类型] [变量命]<span class="comment">//定义输入输出信号（见下文）</span></span><br><span class="line">);</span><br><span class="line"><span class="comment">//写代码</span></span><br><span class="line"><span class="keyword">endmodule</span> <span class="comment">//结束信号</span></span><br></pre></td></tr></table></figure>
+<h4 id="输入输出信号定义"><a href="#输入输出信号定义" class="headerlink" title="输入输出信号定义"></a>输入输出信号定义</h4><p><code>input</code> 输入信号</p>
+<p><code>output</code> 输出信号</p>
+<p><code>inout</code> 输入&amp;输出信号</p>
+<p>例：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">input</span> [变量类型] [变量命],</span><br><span class="line"><span class="keyword">output</span> [变量类型] [变量命],</span><br><span class="line"><span class="keyword">inout</span> [变量类型] [变量命]</span><br><span class="line"><span class="comment">//放置于模块开始框内</span></span><br></pre></td></tr></table></figure>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><h5 id="线网型变量"><a href="#线网型变量" class="headerlink" title="线网型变量"></a>线网型变量</h5><p>作用：作为真实物理连线的映射</p>
+<p><code>wire</code></p>
+<h5 id="寄存器型变量"><a href="#寄存器型变量" class="headerlink" title="寄存器型变量"></a>寄存器型变量</h5><p>作用：对某一时间状态保存，映射为物理寄存器</p>
+<p><code>reg</code></p>
+<h4 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h4><p><code>parameter</code>  实例化时参数可修改</p>
+<p><code>localparam</code> 实例化时参数不可修改，只能在模块内部使用</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">parameter</span> CNT_MAX = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">localparam</span> CNT_MAX = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><p><strong>格式</strong>：[二进制总长度] [‘] [数值进制符号] [与数值进制符号对应的数值]</p>
+<p>例：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="number">8&#x27;d171</span> <span class="comment">//8位宽，十进制，十进制数值为171</span></span><br><span class="line"><span class="number">8&#x27;hab</span>  <span class="comment">//8位宽，十进制，十六进制数值为ab</span></span><br></pre></td></tr></table></figure>
+<p>[二进制总长度]实际上可有可无，Verilog会自动为常量匹配位宽。</p>
+<p><strong>赋值</strong></p>
+<p>1、阻塞赋值 “=”：</p>
+<p>顺序执行</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1</span>; b = <span class="number">2</span>; c = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	a = b;</span><br><span class="line">	c = a;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">//结果</span></span><br><span class="line">a = <span class="number">2</span>; b = <span class="number">2</span>; c = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>2、非阻塞赋值 “&lt;=”</p>
+<p>并行执行</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1</span>; b = <span class="number">2</span>; c = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	a &lt;= b;</span><br><span class="line">	c &lt;= a; <span class="comment">//两条语句同时发生</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">//结果</span></span><br><span class="line">a = <span class="number">2</span>; b = <span class="number">2</span>; c = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="always"><a href="#always" class="headerlink" title="always"></a>always</h4><p><strong>基本：</strong>一个并行执行的模块。</p>
+<p><strong>触发方式：</strong> <strong>后方</strong>跟随敏感条件（一般有上电平变化触发，高低电平触发，上升沿下降沿触发）</p>
+<p><strong>使用</strong>：</p>
+<p>既可作为<strong>组合逻辑电路</strong>的基本模块（电平变化触发，高低电平触发）</p>
+<p>也可作为<strong>时序逻辑电路</strong>的基本模块（ <strong>时钟信号</strong> 上升沿下降沿触发）</p>
+<p><code>reg</code>型变量只在<code>always</code>块中赋值</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">always</span> @(*) 		 		<span class="comment">//只要有电平变化就触发</span></span><br><span class="line"><span class="keyword">always</span> @(any_signal) 		<span class="comment">//只要括号内对应信号发生电平变化就触发</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 同步置位 */</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> sys_clk)	<span class="comment">//只要系统时钟信号上升沿跳变就触发</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">negedge</span> sys_clk)	<span class="comment">//只要系统时钟信号下降沿跳变就触发</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 异步置位 */</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> sys_clk <span class="keyword">or</span> <span class="keyword">negedge</span> sys_rst_n)	<span class="comment">//只要系统时钟信号下降沿跳变就触发</span></span><br></pre></td></tr></table></figure>
+<h4 id="assign"><a href="#assign" class="headerlink" title="assign"></a>assign</h4><p><strong>基本：</strong>一个无视时序直接执行的模块。</p>
+<p><strong>触发方式：</strong>直接执行</p>
+<p><strong>使用</strong>：</p>
+<p>仅用于<strong>组合逻辑电路</strong>设计。</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> a = b &amp; c;</span><br></pre></td></tr></table></figure>
+<p>可综合出<strong>一个和时序无关</strong>的与门电路。</p>
+]]></content>
+      <categories>
+        <category>Verilog</category>
+      </categories>
+      <tags>
+        <tag>Verilog</tag>
+        <tag>FPGA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Verilog非阻塞赋值与阻塞赋值</title>
+    <url>/2022/01/07/Verilog%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/</url>
+    <content><![CDATA[<p><img src="/2022/01/07/Verilog%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/img.png" alt="img.png"><br><span id="more"></span></p>
+<h1 id="Verilog非阻塞赋值与阻塞赋值"><a href="#Verilog非阻塞赋值与阻塞赋值" class="headerlink" title="Verilog非阻塞赋值与阻塞赋值"></a>Verilog非阻塞赋值与阻塞赋值</h1><h2 id="概念描述"><a href="#概念描述" class="headerlink" title="概念描述"></a>概念描述</h2><p><strong>阻塞赋值（=）</strong>：==串行==</p>
+<ul>
+<li>该语句结束时就完成赋值操作（前面的语句没有完成前，后面的语句是不能执行的）</li>
+<li>在一个过程块内多个阻塞赋值语句是顺序执行的。</li>
+</ul>
+<p><strong>非阻塞赋值（&lt;=）</strong>：==并行==</p>
+<ul>
+<li>非阻塞赋值语句的执行是不会阻塞下一条语句的执行（也就是说在本条非阻塞赋值语句执行完毕前，下一条语句可开始执行）</li>
+<li>非阻塞赋值语句在过程块结束时才完成赋值操作。在一个过程块内的多个非阻塞赋值语句是并行执行的。</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>（1）在编写<strong>时序逻辑</strong>的代码时采用<strong>非阻塞赋值</strong>的方式</p>
+<p>计算<strong>赋值号右手边的信号</strong>时，所有的<strong>变量值均是触发沿到来前的值</strong>，更新的赋值号<strong>左手边的信号</strong>作为<strong>触发沿后的值</strong>，并且<strong>保持到下一个触发沿到来时候</strong>，等待更新。</p>
+<p>==非阻塞赋值可以简单的认为是赋予下一状态的值==</p>
+<p>（2）使用 <code>always</code> 块来编写<strong>组合逻辑</strong>的代码时要<strong>用阻塞赋值</strong>的方式</p>
+<p>使用 <code>always</code> 块<strong>建立组合逻辑电路模型</strong>时不要忘记 <code>always</code> 块中的敏感列表一定要<strong>使用电平触发</strong>的方式。</p>
+<p>==后在 <code>always</code> 块中使用阻塞赋值语句就可以实现组合逻辑。==</p>
+<p>（3）在同<strong>一个</strong> <code>always</code> 块中<strong>不要既要用非阻塞赋值又用阻塞方式</strong>赋值</p>
+<p>在同一个 always 块中对同一个变量既进行阻塞赋值又进行非阻塞赋值会产生综合不可预测的结果。</p>
+<p>（4）<strong>一个</strong> <code>always</code> 块只<strong>一个变量</strong>进行赋值</p>
+<ul>
+<li>always 块是并行的，执行的顺序是随机的，综合时会报多驱动的错误。</li>
+<li>严禁在<strong>多个</strong> <code>always</code> 块中对<strong>同一个变量赋值</strong>。</li>
+<li>不推荐<strong>一个</strong> <code>always</code> 对<strong>多个变量</strong>进行<strong>赋值</strong>。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Verilog</category>
+      </categories>
+      <tags>
+        <tag>Verilog</tag>
+        <tag>FPGA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基于硬禾ICE40UP5K简易DDS信号发生器</title>
+    <url>/2022/02/11/%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%A6%BEICE40UP5K%E7%AE%80%E6%98%93DDS%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8/</url>
+    <content><![CDATA[<p><img src="/2022/02/11/%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%A6%BEICE40UP5K%E7%AE%80%E6%98%93DDS%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8/img.png" alt="img.png"><br><span id="more"></span></p>
+<h1 id="基于硬禾ICE40UP5K简易DDS信号发生器"><a href="#基于硬禾ICE40UP5K简易DDS信号发生器" class="headerlink" title="基于硬禾ICE40UP5K简易DDS信号发生器"></a>基于硬禾ICE40UP5K简易DDS信号发生器</h1><h2 id="一、什么是DDS"><a href="#一、什么是DDS" class="headerlink" title="一、什么是DDS"></a>一、什么是DDS</h2><p>DDS（Direct Digital Synthesizer）直接数字合成技术，是一种用于产生稳定的周期性的波形。</p>
+<p>简单来说就是在ROM中存取离散的正弦波数据，让后在一个时钟作用下，按照固定的步长将ROM中的数据读出并送入DAC中输出。并在其后添加一个低通滤波器，便可实现一个较为稳定的正弦波。</p>
+<h2 id="二、DDS实现原理"><a href="#二、DDS实现原理" class="headerlink" title="二、DDS实现原理"></a>二、DDS实现原理</h2><h3 id="1、框图"><a href="#1、框图" class="headerlink" title="1、框图"></a>1、框图</h3><p><img src="/2022/02/11/%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%A6%BEICE40UP5K%E7%AE%80%E6%98%93DDS%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8/KUANG.png" alt="KUANG.png"><br>此图为野火FPGA教程中的DDS框图。</p>
+<p>第一个框为一个寄存器，输入的是一个频率字，频率字就是我们从ROM表中读取数据的步长。</p>
+<p>虚线为整个DDS系统的核心，<strong>相位累加器</strong>。它的具体作用就是对输入的频率字进行累加。</p>
+<p>举个不太恰当的例子，频率字相当于一个人走一步能走多远，相位累加器就是这个人走的路程。</p>
+<p><img src="/2022/02/11/%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%A6%BEICE40UP5K%E7%AE%80%E6%98%93DDS%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8/BU.png" alt="BU.png"></p>
+<p>我们可以用一个圆形作为一个正弦波的周期，黑点代表每个点处ROM存储的数据。两点之间的距离即为频率字控制的步长。</p>
+<p>由此，频率公式为（fo为输出频率，fc为系统时钟频率，M为频率字大小，n为累加器位数）。</p>
+<script type="math/tex; mode=display">
+f_o = \frac{M} {2^n}*f_c</script><p>则频率分辨率为</p>
+<script type="math/tex; mode=display">
+f_o = \frac{f_c} {2^n}</script><p>相位字寄存器用来存储相位数据，相位调制器负责利用相位字来控制相位。</p>
+<p>对于DDS来说，输出周期性波形的相位就相当于ROM中存储数据的位置。</p>
+<p>因此，输出相位增量为（P为输入相位字，n为累加器位数）</p>
+<script type="math/tex; mode=display">
+\phi_o = \frac{2\pi} {2^n}*P</script><p>最后将累加后地址从ROM表中读出发送给DAC，并通过一个低通滤波即可（模拟部分略过）。</p>
+<h3 id="2、细节与补充"><a href="#2、细节与补充" class="headerlink" title="2、细节与补充"></a>2、细节与补充</h3><p>大多数DDS中，相位累加器的范围通常为24-32位，也就是说，通常存在$2^{24}—2^{32}$ 个相位点，但是，由于DAC输出也不过十几位，通常来说用这么大的ROM来存储如此多的重复数据比较浪费。因此就有一种方法。</p>
+<p>即<strong>只输出累加器</strong>所得数据的<strong>高位</strong>（位数一般与存储深度相当）。</p>
+<p>比如，如果我只有10位存储深度的ROM，但是同时，我想要$2^{24}$ 个相位点时，就可以只输出累加器所得结果的高10位。</p>
+<h2 id="三、设计要求"><a href="#三、设计要求" class="headerlink" title="三、设计要求"></a>三、设计要求</h2><ul>
+<li>能够产生正弦波、三角波、方波，可以通过扩展板上的按键控制波形的切换</li>
+<li>产生信号的幅度0-3Vpp之间可调，调节分辨率精确到10mV，可以通过电位计进行调节</li>
+<li>产生信号的频率100Hz - 2MHz之间可调，频率调节分辨率可达10Hz</li>
+<li>产生的波形、波形的幅度、波形的频率都实时显示在OLED屏幕上</li>
+</ul>
+<h2 id="四、设计思路"><a href="#四、设计思路" class="headerlink" title="四、设计思路"></a>四、设计思路</h2><h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p><img src="/2022/02/11/%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%A6%BEICE40UP5K%E7%AE%80%E6%98%93DDS%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8/az.png" alt="az.png"></p>
+<p>利用内部锁相环产生48MHz时钟信号</p>
+<p>创建DDS模块儿。</p>
+<p>为了便于不同情况下设置不同参数，编写模式状态机。</p>
+<p>编写ADC采样驱动，用于设置具体数据。</p>
+<p>编写DDS基本组成，即相位累加器和ROM表，设置频率字24位，最小调节频率2.77Hz</p>
+<p>因为ADC读取为8位，因此最小调节幅度为12mV。</p>
+<p>同时，设置两个按键除抖动模块用于交互。（图中省略）</p>
+<h3 id="交互思路"><a href="#交互思路" class="headerlink" title="交互思路"></a>交互思路</h3><p><strong>按键1</strong>：切换模式，在峰峰值、频率、波形之间切换。</p>
+<p><strong>按键2</strong>：</p>
+<ul>
+<li><p>波形模式下，按键二可依照，正弦波-三角波-方波-正弦波的顺序切换波形。</p>
+</li>
+<li><p>频率模式下，按键二用于切换三种频率控制模式。</p>
+<p>(1)、L模式，将ADC数据放在频率字低八位。</p>
+<p>(2)、M模式，将ADC数据放在频率字的中间八位。</p>
+<p>(3)、H模式，将ADC数据放在频率字的高八位。</p>
+</li>
+<li><p>峰峰值模式下，将ADC数据锁存入输出中。</p>
+</li>
+</ul>
+<h2 id="五、DDS各模块儿实现与verilog代码"><a href="#五、DDS各模块儿实现与verilog代码" class="headerlink" title="五、DDS各模块儿实现与verilog代码"></a>五、DDS各模块儿实现与verilog代码</h2><h3 id="1、时钟"><a href="#1、时钟" class="headerlink" title="1、时钟"></a>1、时钟</h3><p>原理图中板载晶振为12M。</p>
+<p>且内部锁相环最高工作在48M，因此设置PLL倍频到48M。</p>
+<p>将准备完成信号与复位信号与，变为系统复位</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* PLL产生48MhZ时钟信号 */</span></span><br><span class="line">pll_sys pll_sys_inst (</span><br><span class="line">	<span class="variable">.ref_clk_i</span>		(iclk), </span><br><span class="line">	<span class="variable">.rst_n_i</span>		(irst_n), </span><br><span class="line">	<span class="variable">.lock_o</span>			(w_pll_lock), </span><br><span class="line">	<span class="variable">.outcore_o</span>		(wpll_sys_clk), </span><br><span class="line">	<span class="variable">.outglobal_o</span>	(wpll_glo_clk)</span><br><span class="line">	);</span><br><span class="line"><span class="keyword">assign</span> w_sys_rstn = w_pll_lock &amp; irst_n;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2、选择模式状态机"><a href="#2、选择模式状态机" class="headerlink" title="2、选择模式状态机"></a>2、选择模式状态机</h3><p>在硬禾的开发板中只有<strong>两个</strong>按键。因此，设计<strong>一个按键可以控制频率设置、波形设置、峰峰值设置三个模式</strong>。用<strong>另外一个按键</strong>和<strong>ADC读取</strong>控制设置的<strong>具体数值</strong>。</p>
+<p>状态机如下</p>
+<p><img src="/2022/02/11/%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%A6%BEICE40UP5K%E7%AE%80%E6%98%93DDS%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8/STATEFSM.png" alt="STATEFSM.png"></p>
+<p>Verilog代码</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> state_fsm(</span><br><span class="line">	<span class="keyword">input</span>			clk			,</span><br><span class="line">	<span class="keyword">input</span>			rst_n		,</span><br><span class="line"></span><br><span class="line">	<span class="keyword">input</span>			key_sel_n	,</span><br><span class="line"></span><br><span class="line">	<span class="keyword">output</span>	[<span class="number">2</span>:<span class="number">0</span>]	state 		</span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">localparam</span>	WAVEMODE = <span class="number">3&#x27;b001</span>, FREQMODE = <span class="number">3&#x27;b010</span>, VPPMODE  = <span class="number">3&#x27;b100</span>;</span><br><span class="line">	<span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] fsm_state;</span><br><span class="line">					</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">always</span> @(<span class="keyword">posedge</span> clk <span class="keyword">or</span> <span class="keyword">negedge</span> rst_n) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span> (~rst_n) <span class="keyword">begin</span></span><br><span class="line">			<span class="comment">// reset</span></span><br><span class="line">			fsm_state &lt;= WAVEMODE;</span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (~key_sel_n) <span class="keyword">begin</span></span><br><span class="line">			<span class="keyword">case</span> (fsm_state)</span><br><span class="line">				WAVEMODE: fsm_state &lt;= FREQMODE	;</span><br><span class="line">				FREQMODE: fsm_state &lt;= VPPMODE	;</span><br><span class="line">				VPPMODE	: fsm_state &lt;= WAVEMODE	;</span><br><span class="line">				<span class="keyword">default</span>	: fsm_state &lt;= WAVEMODE	;</span><br><span class="line">			<span class="keyword">endcase</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			fsm_state &lt;= fsm_state;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">assign</span> state = fsm_state;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h3 id="3、rom表"><a href="#3、rom表" class="headerlink" title="3、rom表"></a>3、rom表</h3><h4 id="matlab生成数据"><a href="#matlab生成数据" class="headerlink" title="matlab生成数据"></a>matlab生成数据</h4><p>由于DAC为八位，因此ROM中数据宽度设置为八位。</p>
+<p>深度设置为11位。</p>
+<p>用matlab编写并生成正弦波、方波、三角波三种文件。</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">%生成正弦波数据</span></span><br><span class="line">x = <span class="built_in">linspace</span>(<span class="number">0</span>,<span class="number">2</span>*<span class="built_in">pi</span><span class="number">-2</span>*<span class="built_in">pi</span>/<span class="number">2048</span>,<span class="number">2048</span>);</span><br><span class="line">sin_data = <span class="number">255</span>*((<span class="built_in">sin</span>(x)+<span class="number">1</span>)/<span class="number">2</span>);</span><br><span class="line"><span class="comment">%生成方波数据</span></span><br><span class="line">squ_data = repelem([<span class="number">0</span>,<span class="number">255</span>],<span class="number">1024</span>);</span><br><span class="line"><span class="comment">%生成三角波数据</span></span><br><span class="line">tri_data_l = <span class="built_in">linspace</span>(<span class="number">0</span>,<span class="number">255</span>,<span class="number">1024</span>);</span><br><span class="line">tri_data_h = <span class="built_in">linspace</span>(<span class="number">255</span>,<span class="number">0</span>,<span class="number">1024</span>);</span><br><span class="line">tri_data = [tri_data_l,tri_data_h];</span><br></pre></td></tr></table></figure>
+<p>生成二进制文件函数</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wave_generate</span><span class="params">(data, path, width, depth )</span></span></span><br><span class="line"><span class="comment">%根据波形数据输出对应二进制文件</span></span><br><span class="line"><span class="comment">%data   波形数据</span></span><br><span class="line"><span class="comment">%path   文件地址，例如&#x27;C:\MAT\square_data.txt&#x27;</span></span><br><span class="line"><span class="comment">%width  数据输出宽度</span></span><br><span class="line"><span class="comment">%depth  数据存储深度</span></span><br><span class="line">data = uint32(data);</span><br><span class="line">data = dec2bin(data);</span><br><span class="line">fid = fopen(path,<span class="string">&#x27;w&#x27;</span>);</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:depth</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:width</span><br><span class="line">        <span class="keyword">if</span> data(<span class="built_in">i</span>,<span class="built_in">j</span>) == <span class="string">&#x27;1&#x27;</span></span><br><span class="line">            tb=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            tb=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        fprintf(fid,<span class="string">&#x27;%d&#x27;</span>,tb);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    fprintf(fid,<span class="string">&#x27;\r\n&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">fclose(fid);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%调用函数将文件生成</span></span><br><span class="line">sin_path = <span class="string">&#x27;C:\MAT\sin_data.txt&#x27;</span></span><br><span class="line">squ_path = <span class="string">&#x27;C:\MAT\squ_data.txt&#x27;</span></span><br><span class="line">tri_path = <span class="string">&#x27;C:\MAT\tri_data.txt&#x27;</span></span><br><span class="line">wave_generate(sin_data, sin_path, <span class="number">8</span>, <span class="number">2</span>^<span class="number">11</span>);</span><br><span class="line">wave_generate(squ_data, squ_path, <span class="number">8</span>, <span class="number">2</span>^<span class="number">11</span>);</span><br><span class="line">wave_generate(tri_data, tri_path, <span class="number">8</span>, <span class="number">2</span>^<span class="number">11</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="ROM输出代码"><a href="#ROM输出代码" class="headerlink" title="ROM输出代码"></a>ROM输出代码</h4><p>输出时利用定点数乘法，对峰峰值控制。</p>
+<p><strong>小数的定点乘法原理</strong></p>
+<p>两个已至定点小数相乘，若第一个数的小数位为n1，第二个数的小数位为n2，则相乘结果小数位为（n1+n2）。</p>
+<p>则结果右移（n1+n2）位就是相乘结果的整数部分。</p>
+<p>Verilog实现：</p>
+<p>输入：</p>
+<ul>
+<li>时钟和复位（PLL分频后时钟）</li>
+<li>总状态（只有当模式状态机在WAVEMODE时，ROM中波形才可改变，只有当模式状态机在VPPMODE时，输出峰值才可改变。）</li>
+<li>波形控制按键</li>
+<li>ADC读取数据（用来改变输出峰峰值）</li>
+<li>地址（累加器输出结果）</li>
+</ul>
+<p>输出</p>
+<ul>
+<li>DAC数据</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> user_rom8x2k #(<span class="keyword">parameter</span> ROM_DEPTH = <span class="number">11&#x27;d2047</span>)(</span><br><span class="line">	<span class="keyword">input</span>  				clk_i  			,</span><br><span class="line">    <span class="keyword">input</span>  				clk_en_i		,</span><br><span class="line"></span><br><span class="line">    <span class="comment">//输入状态</span></span><br><span class="line">	<span class="keyword">input</span>		[<span class="number">2</span>:<span class="number">0</span>]	FSM_state		,</span><br><span class="line">    <span class="keyword">input</span>				nkey_wave_con	,</span><br><span class="line">    <span class="keyword">input</span>		[<span class="number">7</span>:<span class="number">0</span>]	adc_val			,</span><br><span class="line">  	</span><br><span class="line">    <span class="keyword">input</span>  		[<span class="number">10</span>:<span class="number">0</span>]  addr_i  		,</span><br><span class="line">    <span class="keyword">output</span>		[<span class="number">7</span>:<span class="number">0</span>]  	rd_data_o</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">localparam</span>	WAVEMODE = <span class="number">3&#x27;b001</span>, VPPMODE  = <span class="number">3&#x27;b100</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>]	sin_table [ROM_DEPTH:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">reg</span>	[<span class="number">7</span>:<span class="number">0</span>]	tri_table [ROM_DEPTH:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">reg</span>	[<span class="number">7</span>:<span class="number">0</span>]	squ_table [ROM_DEPTH:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">initial</span> <span class="keyword">begin</span>	<span class="comment">/* 读取波形数据到ROM中，此处文件路径应根据自己文件位置定 */</span></span><br><span class="line">	<span class="built_in">$readmemb</span>(<span class="string">&quot;C:/Users/11091/Desktop/FPGA_Active_By_yinghe/my_prj/simple_DDS/MAT/sin_data.txt&quot;</span>,		sin_table);</span><br><span class="line">	<span class="built_in">$readmemb</span>(<span class="string">&quot;C:/Users/11091/Desktop/FPGA_Active_By_yinghe/my_prj/simple_DDS/MAT/triangle_data.txt&quot;</span>,	tri_table);</span><br><span class="line">	<span class="built_in">$readmemb</span>(<span class="string">&quot;C:/Users/11091/Desktop/FPGA_Active_By_yinghe/my_prj/simple_DDS/MAT/square_data.txt&quot;</span>,		squ_table);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 状态图 */</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] state;</span><br><span class="line"><span class="keyword">localparam</span> SIN = <span class="number">2&#x27;b00</span>, TRIANGLE = <span class="number">2&#x27;b01</span>, SQUARE = <span class="number">2&#x27;b11</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 波形状态转换 */</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk_i <span class="keyword">or</span> <span class="keyword">negedge</span> clk_en_i) <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span> (~clk_en_i) <span class="keyword">begin</span></span><br><span class="line">		state &lt;= <span class="number">2&#x27;b0</span>;<span class="comment">// reset</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>((FSM_state == WAVEMODE) &amp;&amp; (nkey_wave_con == <span class="number">1&#x27;b0</span>)) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">case</span> (state)</span><br><span class="line">			SIN: 		state &lt;= TRIANGLE 	;</span><br><span class="line">			TRIANGLE:	state &lt;= SQUARE 	;</span><br><span class="line">			SQUARE:		state &lt;= SIN 		;</span><br><span class="line">			<span class="keyword">default</span>:	state &lt;= SIN 		;</span><br><span class="line">		<span class="keyword">endcase</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		state &lt;= state;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 不同状态输出不同波形 */</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>]  rd_data_reg;</span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk_i <span class="keyword">or</span> <span class="keyword">negedge</span> clk_en_i) <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span> (~clk_en_i) <span class="keyword">begin</span></span><br><span class="line">		rd_data_reg &lt;= <span class="number">8&#x27;b0</span>;<span class="comment">// reset</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">case</span> (state)</span><br><span class="line">			SIN: 		rd_data_reg &lt;= sin_table[addr_i][<span class="number">7</span>:<span class="number">0</span>];</span><br><span class="line">			TRIANGLE:	rd_data_reg &lt;= tri_table[addr_i][<span class="number">7</span>:<span class="number">0</span>];</span><br><span class="line">			SQUARE:		rd_data_reg &lt;= squ_table[addr_i][<span class="number">7</span>:<span class="number">0</span>];</span><br><span class="line">			<span class="keyword">default</span>:	rd_data_reg &lt;= sin_table[addr_i][<span class="number">7</span>:<span class="number">0</span>];</span><br><span class="line">		<span class="keyword">endcase</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 输出幅度控制 */</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] adc_val_reg;</span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk_i <span class="keyword">or</span> <span class="keyword">negedge</span> clk_en_i) <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span> (~clk_en_i)</span><br><span class="line">		adc_val_reg &lt;= <span class="number">8&#x27;b0</span>;<span class="comment">// reset</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (FSM_state == VPPMODE)</span><br><span class="line">		adc_val_reg &lt;= adc_val;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		adc_val_reg &lt;= adc_val_reg;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">wire</span>	[<span class="number">15</span>:<span class="number">0</span>]	rd_data_buffer;</span><br><span class="line"><span class="keyword">assign</span> rd_data_buffer = rd_data_reg*adc_val_reg;</span><br><span class="line"><span class="keyword">assign</span> rd_data_o = rd_data_buffer[<span class="number">15</span>:<span class="number">8</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h3 id="3、累加器"><a href="#3、累加器" class="headerlink" title="3、累加器"></a>3、累加器</h3><p>累加器的频率字寄存器，应实现调节频率的效果，因为要求最低为10Hz的精度，我们设置频率字为24位</p>
+<p>但是adc读取的数据只有八位。因此可以用另外一个按键设置三个状态，分别调节频率字的高八位、中间八位、和低八位。</p>
+<p>Verliog代码</p>
+<p>输入：</p>
+<ul>
+<li>时钟和复位</li>
+<li>模式状态机（只有在FREQMODE时调节才有效）</li>
+<li>频率字调节按键</li>
+<li>频率字大小调节输入（adc输入）</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> acculator #(<span class="keyword">parameter</span> OUTCNT_MAX = <span class="number">11&#x27;d2047</span>)</span><br><span class="line">(</span><br><span class="line">	<span class="keyword">input</span>			iclk			,</span><br><span class="line">	<span class="keyword">input</span>			irstn			,</span><br><span class="line">	<span class="comment">//输入状态</span></span><br><span class="line">	<span class="keyword">input</span>	[<span class="number">2</span>:<span class="number">0</span>]	FSM_state		,</span><br><span class="line">	<span class="comment">//频率字高低位控制</span></span><br><span class="line">	<span class="keyword">input</span>			nkey_freq_con	,</span><br><span class="line"></span><br><span class="line">	<span class="keyword">input</span> 	[<span class="number">7</span>:<span class="number">0</span>]	pwm_adc_out		,</span><br><span class="line"></span><br><span class="line">	<span class="keyword">output</span> 	[<span class="number">10</span>:<span class="number">0</span>]	odac_adder	</span><br><span class="line"></span><br><span class="line">);</span><br><span class="line">	<span class="keyword">localparam</span>	FREQMODE = <span class="number">3&#x27;b010</span>;</span><br><span class="line">	<span class="keyword">localparam</span>	FREQ_CONF_L = <span class="number">2&#x27;b00</span>,FREQ_CONF_M = <span class="number">2&#x27;b01</span>,FREQ_CONF_H = <span class="number">2&#x27;b11</span>;</span><br><span class="line">	<span class="keyword">reg</span>	[<span class="number">2</span>:<span class="number">0</span>]	freq_conf_state;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 频率大小段控制--状态机 */</span></span><br><span class="line">	<span class="keyword">always</span> @(<span class="keyword">posedge</span> iclk <span class="keyword">or</span> <span class="keyword">negedge</span> irstn) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span> (~irstn)</span><br><span class="line">			freq_conf_state &lt;= FREQ_CONF_L;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>((FSM_state == FREQMODE) &amp;&amp; (~nkey_freq_con)) <span class="keyword">begin</span></span><br><span class="line">			<span class="keyword">case</span> (freq_conf_state)</span><br><span class="line">				FREQ_CONF_L: freq_conf_state &lt;= FREQ_CONF_M;</span><br><span class="line">				FREQ_CONF_M: freq_conf_state &lt;= FREQ_CONF_H;</span><br><span class="line">				FREQ_CONF_H: freq_conf_state &lt;= FREQ_CONF_L;</span><br><span class="line">				<span class="keyword">default</span>: 	 freq_conf_state &lt;= FREQ_CONF_L;</span><br><span class="line">			<span class="keyword">endcase</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			freq_conf_state &lt;= freq_conf_state;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 频率控制 */</span></span><br><span class="line">	<span class="keyword">reg</span>	[<span class="number">23</span>:<span class="number">0</span>]	 freq_byte;</span><br><span class="line">	<span class="keyword">always</span> @(<span class="keyword">posedge</span> iclk <span class="keyword">or</span> <span class="keyword">negedge</span> irstn) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span> (~irstn)</span><br><span class="line">			freq_byte &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(FSM_state == FREQMODE) <span class="keyword">begin</span></span><br><span class="line">			<span class="keyword">case</span> (freq_conf_state)</span><br><span class="line">				FREQ_CONF_L	: freq_byte[<span class="number">7</span> : <span class="number">0</span>] &lt;= pwm_adc_out;</span><br><span class="line">				FREQ_CONF_M	: freq_byte[<span class="number">13</span>: <span class="number">8</span>] &lt;= pwm_adc_out;</span><br><span class="line">				FREQ_CONF_H	: freq_byte[<span class="number">23</span>:<span class="number">16</span>] &lt;= pwm_adc_out;</span><br><span class="line">				<span class="keyword">default</span>		: freq_byte[<span class="number">7</span> : <span class="number">0</span>] &lt;= pwm_adc_out;</span><br><span class="line">			<span class="keyword">endcase</span></span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			freq_byte &lt;= freq_byte;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 输出累加地址 */</span></span><br><span class="line">	<span class="keyword">reg</span> [<span class="number">23</span>:<span class="number">0</span>] odac_reg;</span><br><span class="line">	<span class="keyword">always</span> @(<span class="keyword">posedge</span> iclk <span class="keyword">or</span> <span class="keyword">negedge</span> irstn) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span> (~irstn)</span><br><span class="line">			odac_reg &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(odac_adder == OUTCNT_MAX)</span><br><span class="line">			odac_reg &lt;= <span class="number">1&#x27;d0</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			odac_reg &lt;= odac_reg + freq_byte;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">assign</span> odac_adder = odac_reg[<span class="number">23</span>:<span class="number">13</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、Σ-△adc"><a href="#4、Σ-△adc" class="headerlink" title="4、Σ-△adc"></a>4、Σ-△adc</h3><p>不多赘述，见大佬博客。</p>
+<p><a href="https://raincorn.top/ice40up5k_sigma_delta_adc/">点我</a></p>
+<h3 id="5、OLED"><a href="#5、OLED" class="headerlink" title="5、OLED"></a>5、OLED</h3><p>改编自硬禾代码，由于比较长，这里就不贴出来了。</p>
+<h3 id="6、顶层模块"><a href="#6、顶层模块" class="headerlink" title="6、顶层模块"></a>6、顶层模块</h3><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> top(</span><br><span class="line">	<span class="keyword">input</span>			iclk		,</span><br><span class="line">	<span class="keyword">input</span>			irstn		,</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 按键 */</span></span><br><span class="line">	<span class="keyword">input</span>			ikey_sel_n	,</span><br><span class="line">	<span class="keyword">input</span>			ikey_fov_n	,</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* ADC输入输出控制 */</span></span><br><span class="line">	<span class="keyword">input</span>			pwm_adc_in	,</span><br><span class="line">	<span class="keyword">output</span>	 		pwm_out		,</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">output</span>	[<span class="number">7</span>:<span class="number">0</span>]	owdac_num	,</span><br><span class="line"></span><br><span class="line">	<span class="keyword">output</span>			oled_csn	,	<span class="comment">//OLCD液晶屏使能</span></span><br><span class="line">	<span class="keyword">output</span>			oled_rst	,	<span class="comment">//OLCD液晶屏复位</span></span><br><span class="line">	<span class="keyword">output</span>			oled_dcn	,	<span class="comment">//OLCD数据指令控制</span></span><br><span class="line">	<span class="keyword">output</span>			oled_clk	,	<span class="comment">//OLCD时钟信号</span></span><br><span class="line">	<span class="keyword">output</span>			oled_dat		<span class="comment">//OLCD数据信号</span></span><br><span class="line"></span><br><span class="line">	);</span><br><span class="line">	</span><br><span class="line">	raw_DDS  raw_DDS_inst (</span><br><span class="line">	<span class="variable">.iclk</span>		(iclk),</span><br><span class="line">	<span class="variable">.irst_n</span>		(irstn),</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 按键 */</span></span><br><span class="line">	<span class="variable">.ikey_sel_n</span>	(ikey_sel_n),</span><br><span class="line">	<span class="variable">.ikey_fov_n</span>	(ikey_fov_n),</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* ADC输入输出控制 */</span></span><br><span class="line">	<span class="variable">.pwm_adc_in</span>	(pwm_adc_in),</span><br><span class="line">	<span class="variable">.pwm_out</span>	(pwm_out),</span><br><span class="line"></span><br><span class="line">	<span class="variable">.owdac_num</span>	(owdac_num)</span><br><span class="line">	);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 显示模块 */</span></span><br><span class="line">	<span class="keyword">wire</span> pll_clk;</span><br><span class="line">	<span class="keyword">wire</span> pll_rst_n;</span><br><span class="line">	<span class="keyword">assign</span> pll_clk = raw_DDS_inst<span class="variable">.wpll_sys_clk</span>;</span><br><span class="line">	<span class="keyword">assign</span> pll_rst_n = raw_DDS_inst<span class="variable">.w_sys_rstn</span>;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] FSM_state;</span><br><span class="line">	<span class="keyword">assign</span> FSM_state = raw_DDS_inst<span class="variable">.FSM_state</span>;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] shape;</span><br><span class="line">	<span class="keyword">assign</span> shape = raw_DDS_inst<span class="variable">.user_rom8x2k_inst</span><span class="variable">.state</span>;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">23</span>:<span class="number">0</span>] freq;</span><br><span class="line">	<span class="keyword">assign</span> freq = raw_DDS_inst<span class="variable">.acculator_inst</span><span class="variable">.freq_byte</span>;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">23</span>:<span class="number">0</span>] freq_num;</span><br><span class="line">	<span class="keyword">assign</span> freq_num = ((freq*<span class="number">4&#x27;b1011</span>)&gt;&gt;<span class="number">2</span>);</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] freq_state;</span><br><span class="line">	<span class="keyword">assign</span> freq_state = raw_DDS_inst<span class="variable">.acculator_inst</span><span class="variable">.freq_conf_state</span>;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">7</span>:<span class="number">0</span>] vpp_byte;</span><br><span class="line">	<span class="keyword">assign</span> vpp_byte = raw_DDS_inst<span class="variable">.user_rom8x2k_inst</span><span class="variable">.adc_val_reg</span>;</span><br><span class="line">	<span class="keyword">wire</span> [<span class="number">23</span>:<span class="number">0</span>] vpp;</span><br><span class="line">	<span class="keyword">assign</span> vpp = <span class="number">3300</span> * vpp_byte;</span><br><span class="line">	OLED12864 OLED12864_inst (</span><br><span class="line">			<span class="variable">.clk</span>  			(pll_clk),	<span class="comment">//12MHz系统时钟</span></span><br><span class="line">			<span class="variable">.rst_n</span> 			(pll_rst_n),	<span class="comment">//系统复位，低有效</span></span><br><span class="line"></span><br><span class="line">			<span class="variable">.FSM_state</span>		(FSM_state),</span><br><span class="line">		</span><br><span class="line">			<span class="variable">.vpp</span>			(vpp[<span class="number">23</span>:<span class="number">8</span>]),</span><br><span class="line">			<span class="variable">.frq</span>			(freq_num[<span class="number">15</span>:<span class="number">0</span>]),</span><br><span class="line">			<span class="variable">.shape</span> 			(shape),</span><br><span class="line">			<span class="variable">.freq_sta</span> 		(freq_state),</span><br><span class="line"></span><br><span class="line">			<span class="variable">.oled_csn</span>		(oled_csn),	<span class="comment">//OLCD液晶屏使能</span></span><br><span class="line">			<span class="variable">.oled_rst</span>		(oled_rst),	<span class="comment">//OLCD液晶屏复位</span></span><br><span class="line">			<span class="variable">.oled_dcn</span>		(oled_dcn),	<span class="comment">//OLCD数据指令控制</span></span><br><span class="line">			<span class="variable">.oled_clk</span>		(oled_clk),	<span class="comment">//OLCD时钟信号</span></span><br><span class="line">			<span class="variable">.oled_dat</span>		(oled_dat)	<span class="comment">//OLCD数据信号</span></span><br><span class="line">		);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h1 id="六、功能展示"><a href="#六、功能展示" class="headerlink" title="六、功能展示"></a>六、功能展示</h1><p><img src="/2022/02/11/%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%A6%BEICE40UP5K%E7%AE%80%E6%98%93DDS%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8/show1.png" alt="show1.png"></p>
+]]></content>
+      <categories>
+        <category>Verilog</category>
+        <category>FPGA</category>
+      </categories>
+      <tags>
+        <tag>Verilog</tag>
+        <tag>FPGA</tag>
+        <tag>DDS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小试牛刀</title>
+    <url>/2022/01/02/%E5%B0%8F%E8%AF%95%E7%89%9B%E5%88%80/</url>
+    <content><![CDATA[<h1 id="第一次"><a href="#第一次" class="headerlink" title="第一次"></a>第一次</h1><p>测试用</p>
+]]></content>
+      <categories>
+        <category>none</category>
+      </categories>
+      <tags>
+        <tag>none</tag>
+      </tags>
+  </entry>
+</search>
